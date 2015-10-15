@@ -1,11 +1,10 @@
 package br.unicamp.comprefacil.model;
 
-import java.math.BigDecimal;
 
 public class Frete {
 	
 	private int tempoEntrega;
-	private BigDecimal valor;
+	private Double valor;
 	
 	public int getTempoEntrega() {
 		return tempoEntrega;
@@ -15,11 +14,11 @@ public class Frete {
 		this.tempoEntrega = tempoEntrega;
 	}
 	
-	public BigDecimal getValor() {
+	public Double getValor() {
 		return valor;
 	}
 	
-	public void setValor(BigDecimal valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
 	}
 }

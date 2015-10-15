@@ -15,6 +15,7 @@ Feature: UC01
     When I ask to calculate shipping
     Then the shipping cost should be <valor>
     And shipping time should be <tempoEntrega>
+    And the data returned is saved
 
     Examples:
       | peso | largura | altura | comprimento | tipoEntrega |   cep      | valor | tempoEntrega |

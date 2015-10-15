@@ -4,21 +4,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 import org.assertj.core.api.Assertions;
+import org.mockito.Mockito;
 
+import br.unicamp.comprefacil.dao.DadosDeEntregaDAO;
 import br.unicamp.comprefacil.model.Endereco;
 import br.unicamp.comprefacil.services.CorreiosServices;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
-/**
- * @ClassName: UC02Steps
- * @Description: TODO
- * @author: TODO
- * @date: 2015-10-10 16:43:57 PM
- * 
- */
 
 public class UC02Steps {
 
@@ -28,44 +22,38 @@ public class UC02Steps {
 
 	@Before
 	public void setUp() {
-		correio = new CorreiosServices();
+		correio = new CorreiosServices(Mockito.mock(DadosDeEntregaDAO.class));
 		throwable = null;
 	}
 
-	/**
-	 * @MethodName: I_am_looking_for_an_address
-	 * @Description: TODO
-	 * @author: TODO
-	 * @date: 2015-10-10 16:43:06 PM
-	 * 
-	 */
 	@Given("^I am looking for an address$")
 	public void I_am_looking_for_an_address() {
 		// Write code here that turns the phrase above into concrete actions
 		assertNotNull(correio);
 	}
 
-	/**
-	 * @MethodName: the_result_should_be
-	 * @Description: TODO
-	 * @author: TODO
-	 * @date: 2015-10-10 16:46:58 PM
-	 * 
-	 */
-	
-	@Then("^the result should be \"(.*)\"$")
-	public void the_result_should_be(String arg1) {
-		// Write code here that turns the phrase above into concrete actions
-		assertEquals("Rua Conde de Iraja, Vila Mariana, Sao Paulo, SP",
-				endereco.toStringEndereco());
+	@Then("^the address should be \"(.*)\"$")
+	public void the_address_should_be(String arg1) {
+		assertEquals(arg1, endereco.getLogradouro());
 	}
-
 	
+	@Then("^the neighborhood should be \"(.*)\"$")
+	public void the_neighborhood_should_be(String arg1) {
+		assertEquals(arg1, endereco.getBairro());
+	}
+	
+	@Then("^the city should be \"(.*)\"$")
+	public void the_city_should_be(String arg1) {
+		assertEquals(arg1, endereco.getCidade());
+	}
+	
+	@Then("^the province should be \"(.*)\"$")
+	public void the_province_should_be(String arg1) {
+		assertEquals(arg1, endereco.getEstado());
+	}
 	
 	@When("^my CEP is \"([^\"]*)\"$")
 	public void my_CEP_is(String cep) throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-		// Write code here that turns the phrase above into concrete actions
 		try {
 			endereco = correio.getEndereco(cep);
 		}catch(Throwable t){
@@ -73,18 +61,8 @@ public class UC02Steps {
     	}
 	}
 	
-
-	/**
-	* @MethodName: should_show_an_error_with_the_message
-	* @Description: TODO
-	* @author: TODO
-	* @date: 2015-10-10 17:23:13 PM
-	* 
-	*/
 	@Then("^should show an error with the message:$")
 	public void should_show_an_error_with_the_message(String message){
-	// Write code here that turns the phrase above into concrete actions
 		Assertions.assertThat(throwable).isNotNull().hasMessage(message);
 	}
-
 }

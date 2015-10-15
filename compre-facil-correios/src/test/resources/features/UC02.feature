@@ -8,11 +8,13 @@ Feature: UC02
 	When my CEP is "123ffgfs" 
 	Then should show an error with the message: 
 	"""
-	The address is not valid
+	The zipcode is not valid
 	"""
 	
  Scenario: Searching for a valid address 
 	Given I am looking for an address
 	When my CEP is "04119010" 
-	Then the result should be "Rua Conde de Iraja, Vila Mariana, Sao Paulo, SP"
-	
+	Then the address should be "Rua Conde de Iraja"
+	And the neighborhood should be "Vila Mariana"
+	And the city should be "Sao Paulo"
+	And the province should be "SP"
