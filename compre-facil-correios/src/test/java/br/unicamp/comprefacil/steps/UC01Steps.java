@@ -21,12 +21,12 @@ public class UC01Steps {
 	private CorreiosServices correio;
 	private Pedido pedido;
 	private Frete frete;
-	private DadosDeEntregaDAO mock;
+	private DadosDeEntregaDAO mock_dao;
 	
 	@Before
 	public void setUp() {
-		mock = Mockito.mock(DadosDeEntregaDAO.class);
-		correio = new CorreiosServices(mock);
+		mock_dao = Mockito.mock(DadosDeEntregaDAO.class);
+		correio = new CorreiosServices(mock_dao);
 		pedido = new Pedido();
 		throwable = null;
 	}
@@ -95,7 +95,7 @@ public class UC01Steps {
 	
 	@And("^the data returned is saved$")
 	public void the_data_returned_is_saved(){
-		Mockito.verify(mock, Mockito.times(1)).saveDadosDeEntrega(Mockito.anyDouble(), Mockito.anyInt());
+		Mockito.verify(mock_dao, Mockito.times(1)).saveDadosDeEntrega(Mockito.anyDouble(), Mockito.anyInt());
 	}
 
 }

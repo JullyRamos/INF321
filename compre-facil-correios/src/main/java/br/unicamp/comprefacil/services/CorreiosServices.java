@@ -17,17 +17,18 @@ public class CorreiosServices {
 	}
 	
 	public Endereco getEndereco(String cep) throws Throwable {
-		
-		CorreiosDAO correiosDAO = new CorreiosDAOImpl();
-		
-		return correiosDAO.getAddress(cep);
+		if(validaCep(cep)) {
+			return dao.getEnderecoEntrega(cep);
+		} else {
+			throw new Throwable("The zipcode is not valid");
+		}
 	}
 	
 	public Boolean validaCep(String cep) { 
-		
-		CorreiosDAO correiosDAO = new CorreiosDAOImpl();
-		
-		return correiosDAO.validCep(cep);
+		if(cep.matches("\\d{8}")){
+			return true;
+		}
+		return false;
 	}
 	
 	public Frete calculaFrete(Pedido p) throws Throwable {
