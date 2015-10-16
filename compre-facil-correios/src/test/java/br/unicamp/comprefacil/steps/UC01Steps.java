@@ -91,19 +91,19 @@ public class UC01Steps {
 				}
 				
 				stubFor(get(urlEqualTo("/calcularFrete?peso="+pedido.getPeso()+"&largura="+pedido.getLargura()+
-						"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
+						"&altura="+pedido.getAltura()+"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
 						.willReturn(aResponse()
 								.withHeader("Content-Type", "text/plain")
 								.withBody("{\"Valor\":\""+valor+"\",\"PrazoEntrega\":\""+tempoEntrega+"\"}")));
 			} else {
 				stubFor(get(urlEqualTo("/calcularFrete?peso="+pedido.getPeso()+"&largura="+pedido.getLargura()+
-						"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
+						"&altura="+pedido.getAltura()+"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
 						.willReturn(aResponse()
 								.withStatus(400)));
 			}
 		} else {
 			stubFor(get(urlEqualTo("/calcularFrete?peso="+pedido.getPeso()+"&largura="+pedido.getLargura()+
-					"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
+					"&altura="+pedido.getAltura()+"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
 					.willReturn(aResponse()
 							.withStatus(500)));
 		}

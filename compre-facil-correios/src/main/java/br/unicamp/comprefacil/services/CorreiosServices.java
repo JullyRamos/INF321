@@ -39,7 +39,7 @@ public class CorreiosServices {
 		Frete frete = null;
 		
 		URL obj = new URL("http://localhost:8090/calcularFrete?peso="+p.getPeso()+"&largura="+p.getLargura()+
-				"&comprimento="+p.getComprimento()+"&tipoEntrega="+p.getTipoEntrega()+"&cep="+p.getCep());
+				"&altura="+p.getAltura()+"&comprimento="+p.getComprimento()+"&tipoEntrega="+p.getTipoEntrega()+"&cep="+p.getCep());
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod("GET");
 

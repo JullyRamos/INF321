@@ -38,9 +38,4 @@ public class Endereco {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	public String toStringEndereco(){
-		
-		return this.logradouro + ", " +  this.bairro + ", " + this.cidade + ", " + this.estado;
-	}
 }
