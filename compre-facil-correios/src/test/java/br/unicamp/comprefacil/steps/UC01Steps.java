@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+
 import br.unicamp.comprefacil.dao.DadosDeEntregaDAO;
 import br.unicamp.comprefacil.model.Frete;
 import br.unicamp.comprefacil.model.Pedido;
@@ -22,6 +24,7 @@ public class UC01Steps {
 	private Pedido pedido;
 	private Frete frete;
 	private DadosDeEntregaDAO mock_dao;
+	private boolean correioServicesStatus;
 	
 	@Before
 	public void setUp() {
@@ -64,13 +67,46 @@ public class UC01Steps {
 	@Given("^correio is \"(.*)\"$")
 	public void correio_is(String arg1){
 		if(arg1.equalsIgnoreCase("on"))
-			correio.setOn(true);
+			correioServicesStatus = true;
 		else
-			correio.setOn(false);
+			correioServicesStatus = false;
 	}
 	
 	@When("^I ask to calculate shipping$")
 	public void I_ask_to_calculate_shipping(){
+		int valor = 0;
+		int tempoEntrega = 0;
+		
+		if(correioServicesStatus) {
+			if(correio.validaCep(pedido.getCep())) {
+				if(pedido.getTipoEntrega().equals("PAC")){
+					valor = 5;
+					tempoEntrega = 5;
+				} else if(pedido.getTipoEntrega().equals("SEDEX")){
+					valor = 20;
+					tempoEntrega = 3;
+				} else if(pedido.getTipoEntrega().equals("SEDEX10")){
+					valor = 100;
+					tempoEntrega = 1;
+				}
+				
+				stubFor(get(urlEqualTo("/calcularFrete?peso="+pedido.getPeso()+"&largura="+pedido.getLargura()+
+						"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
+						.willReturn(aResponse()
+								.withHeader("Content-Type", "text/plain")
+								.withBody("{\"Valor\":\""+valor+"\",\"PrazoEntrega\":\""+tempoEntrega+"\"}")));
+			} else {
+				stubFor(get(urlEqualTo("/calcularFrete?peso="+pedido.getPeso()+"&largura="+pedido.getLargura()+
+						"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
+						.willReturn(aResponse()
+								.withStatus(400)));
+			}
+		} else {
+			stubFor(get(urlEqualTo("/calcularFrete?peso="+pedido.getPeso()+"&largura="+pedido.getLargura()+
+					"&comprimento="+pedido.getComprimento()+"&tipoEntrega="+pedido.getTipoEntrega()+"&cep="+pedido.getCep()))
+					.willReturn(aResponse()
+							.withStatus(500)));
+		}
 		try {
 			frete = correio.calculaFrete(pedido);
 		} catch (Throwable e) {
